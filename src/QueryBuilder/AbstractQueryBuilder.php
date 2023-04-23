@@ -79,21 +79,9 @@ abstract class AbstractQueryBuilder implements QueryBuilderInterface
         return $this->query;
     }
 
-    /**
-     * @param string|QueryBuilderInterface|InlineFragment|Query $selectedField
-     *
-     * @return $this
-     */
-    protected function selectField($selectedField)
+    protected function selectField(string|QueryBuilderInterface|InlineFragment|Query $selectedField): static
     {
-        if (
-            is_string($selectedField)
-            || $selectedField instanceof QueryBuilderInterface
-            || $selectedField instanceof Query
-            || $selectedField instanceof InlineFragment
-        ) {
-            $this->selectionSet[] = $selectedField;
-        }
+        $this->selectionSet[] = $selectedField;
 
         return $this;
     }

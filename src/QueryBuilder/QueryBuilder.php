@@ -2,6 +2,7 @@
 
 namespace GraphQL\QueryBuilder;
 
+use GraphQL\InlineFragment;
 use GraphQL\Query;
 
 /**
@@ -11,16 +12,23 @@ use GraphQL\Query;
  */
 class QueryBuilder extends AbstractQueryBuilder
 {
-    /**
-     * Changing method visibility to public
-     *
-     * @param Query|QueryBuilder|string $selectedField
-     *
-     * @return AbstractQueryBuilder|QueryBuilder
-     */
-    public function selectField($selectedField)
+    public function selectField(string|QueryBuilderInterface|InlineFragment|Query $selectedField): static
     {
         return parent::selectField($selectedField);
+    }
+
+    /**
+     * @param array<string|QueryBuilderInterface|InlineFragment|Query> $fields
+     *
+     * @return static
+     */
+    protected function selectFields(array $fields): static
+    {
+        foreach ($fields as $field) {
+            parent::selectField($field);
+        }
+
+        return $this;
     }
 
     /**
